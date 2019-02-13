@@ -1,0 +1,70 @@
+/*Lab 4 CSS*/
+@media only screen{
+	.homer{
+		width:312px;
+		height:312px;
+		background: url("homer.jpg");
+	}
+}
+
+/*Screen width is greater than 1600 pixels, display the top-left image*/
+@media screen and (min-width: 1600px){
+	.homer{
+		width:312px;
+		height:312px;
+		background: url("homer.jpg") 0px 0px no-repeat;
+	}
+}
+/*Screen width is greater than 1400 pixels but 
+less than or equal to 1600 pixels, display the top-right image*/
+@media screen and (min-width: 1400px) and (max-width: 1600px){
+	.homer{
+		width:312px;
+		height:312px;
+		background: url("homer.jpg") 312px 0px no-repeat;
+	}
+}
+/*Screen width is greater than 1200 pixels but 
+less than or equal to 1400 pixels, display the bottom-left image*/
+@media screen and (min-width: 1200px) and (max-width: 1400px){
+	.homer{
+		width:312px;
+		height:312px;
+		background: url("homer.jpg") 0px 312px no-repeat;
+	}
+}
+/*Screen width is greater than 1000 pixels but
+less than or equal to 1200 pixels, display the last image, bottom-right*/
+@media screen and (min-width: 1000px) and (max-width: 1200px){
+	.homer{
+		width:312px;
+		height:312px;
+		background: url("homer.jpg") 312px 312px no-repeat;
+	}
+}
+/*Screen width is greater than 800 pixels but 
+less than or equal to 1000 pixels, display the bottom-left image*/
+@media screen and (min-width: 800px) and (max-width: 1000px){
+	.homer{
+		width:312px;
+		height:312px;
+		background: url("homer.jpg") 0px 312px no-repeat;
+	}
+}
+/*Screen width is greater than 600 pixels but 
+less than or equal to 800 pixels, display the top-right image*/
+@media screen and (min-width: 600px) and (max-width: 800px){
+	.homer{
+		width:312px;
+		height:312px;
+		background: url("homer.jpg") 312px 0px no-repeat;
+	}
+}
+/*Screen width is less than or equal to 600 pixels, display the top-left image*/
+@media screen and (max-width: 600px){
+	.homer{
+		width:312px;
+		height:312px;
+		background: url("homer.jpg") 0px 0px no-repeat;
+	}
+}
