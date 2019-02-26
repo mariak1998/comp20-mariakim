@@ -1,3 +1,4 @@
+parsing for vehicles - passenger 
 var Lat = 0; 
 var Long = 0;
 var me = new google.maps.LatLng(myLat, myLng);
