@@ -3,10 +3,10 @@
 <html>
 
 	<head>
-		<title>Geolocation Map Example</title>
+		<title>Lift Knockoff</title>
 		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 		<meta charset="utf-8" />
-		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFxYLsYSGb9WY7VWiznWLLmnlHSJeDtmE"></script>
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9sQaGQMUn1TEZG3C11LjRlpQAppS4WGk"></script>
 		<link rel="stylesheet" href="liftstyle.css" type="text/css"/>
 		<script>
 			var myLat = 0;
@@ -49,12 +49,26 @@
 				});
 				marker.setMap(map);
 					
+
+			///how to send a marker image to google maps api?//
 				// Open info window on click of marker
 				google.maps.event.addListener(marker, 'click', function() {
 					infowindow.setContent(marker.title);
 					infowindow.open(map, marker);
 				});
+				getall();
 			}
+			function getall(){
+				xhr = new XMLHttpRequest();
+				xhr.open("POST", "https://hans-moleman.herokuapp.com/rides", true);
+				xhr.onreadystatechange = function() {
+ 				 // Step 5: parse the JSON data from response
+  					if (xhr.readyState == 4 && xhr.status == 200) {
+  					xhr.send("username=zLg3mbdk&lat=0&lng=0");
+   					response = JSON.parse(request.responseText);
+    				}
+  				}
+			};
 		</script>
 	</head>
 	
@@ -62,3 +76,5 @@
 		<div id="map_canvas"></div>
 	</body>
 </html>
+
+
