@@ -36,8 +36,7 @@
 					alert("Geolocation is not supported by your web browser.  What a shame!");
 				}
 			}
-			function renderMap() {
-				console.log("render");
+			function renderMap(){
 				me = new google.maps.LatLng(myLat, myLng);
 				// Update map and go there...
 				map.panTo(me);
@@ -50,7 +49,6 @@
 				marker.setMap(map);
 					
 
-			///how to send a marker image to google maps api?//
 				// Open info window on click of marker
 				google.maps.event.addListener(marker, 'click', function() {
 					infowindow.setContent(marker.title);
@@ -61,11 +59,14 @@
 			function getall(){
 				xhr = new XMLHttpRequest();
 				xhr.open("POST", "https://hans-moleman.herokuapp.com/rides", true);
+				xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+				xhr.send("username=zLg3mbdk&lat=0&lng=0");
 				xhr.onreadystatechange = function() {
+					console.log("got here!")
  				 // Step 5: parse the JSON data from response
   					if (xhr.readyState == 4 && xhr.status == 200) {
-  					xhr.send("username=zLg3mbdk&lat=0&lng=0");
-   					response = JSON.parse(request.responseText);
+   					out = JSON.parse(xhr.responseText);
+   					console.log(out);
     				}
   				}
 			};
