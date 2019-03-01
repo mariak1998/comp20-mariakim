@@ -43,18 +43,7 @@
 				me = new google.maps.LatLng(myLat, myLng);
 				// Update map and go there...
 				map.panTo(me);
-				
-				// Create a marker
-				marker = new google.maps.Marker({
-					position: me,
-					title: "Here I am!"
-				});
-				marker.setMap(map);
-				// Open info window on click of marker
-				google.maps.event.addListener(marker, 'click', function() {
-					infowindow.setContent(marker.title);
-					infowindow.open(map, marker);
-				});
+				var hotdog = 0;
 				getall();
 			}
 			function getall(){
@@ -65,16 +54,16 @@
  				 // Step 5: parse the JSON data from response
   					if (xhr.readyState == 4 && xhr.status == 200) {
    						var out = JSON.parse(xhr.responseText);
-   						console.log(out);
    						if(out.vehicles != undefined){
    							for(count = 0; count < out.vehicles.length; count++){
-   								console.log("Nope");
    								pos = new google.maps.LatLng(out.vehicles[count].lat, out.vehicles[count].lng);
+   								dist = new google.maps.geometry.spherical.computeDistanceBetween(me, pos);
    								if(out.vehicles[count].username == "WEINERMOBILE"){
+   									var weinerdistance = dist;
    									marker = new google.maps.Marker({
    										position: pos,
    										icon: weiner,
-   										title: "Distance: "
+   										title: "Username: " + out.vehicles[count].username + " is " + dist + " miles away"
    									});
    									marker.setMap(map);
    									google.maps.event.addListener(marker, 'click', function() {
@@ -83,11 +72,10 @@
 										});
    								}
    								else{
-   									console.log("got here");
    									marker = new google.maps.Marker({
    									position: pos,
    									icon: car,
-   									title: "Distance: "
+   									title: "WEINERMOBILE is " + dist + " miles away"
    									});
    									marker.setMap(map);
    									google.maps.event.addListener(marker, 'click', function() {
@@ -100,11 +88,13 @@
    						if(out.passengers != undefined){
    							for(count = 0; count < out.passengers.length; count++){
    								pos = new google.maps.LatLng(out.passengers[count].lat, out.passangers[count].lng);
+   								dist = new google.maps.geometry.spherical.computeDistanceBetween(me, pos);
    								if(out.passengers[count].username == "WEINERMOBILE"){
+   									var weinerdistance = dist;
    									marker = new google.maps.Marker({
    										position: pos,
    										icon: weiner,
-   										title: "Distance: "
+   										title: "WEINERMOBILE is " + dist + " miles away"
    									});
    									marker.setMap(map);
    									google.maps.event.addListener(marker, 'click', function() {
@@ -116,7 +106,7 @@
    									marker = new google.maps.Marker({
    									position: pos,
    									icon: person,
-   									title: "Distance: "
+   									title: "Username: " + out.passengers[count].username + " is " + dist + " miles away"
    									});
    									marker.setMap(map);
    									google.maps.event.addListener(marker, 'click', function() {
@@ -129,6 +119,23 @@
    					}
    					
   				}
+  				// Create a marker
+				marker = new google.maps.Marker({
+					position: me,
+					title: "The Weinermobile is nowhere to be seen"
+				});
+				marker.setMap(map);
+				// Open info window on click of marker
+				google.maps.event.addListener(marker, 'click', function() {
+					if(hotdog == 1){
+						weinerdist = google.maps.geometry.spherical.computeDistanceBetween(me, weinerdistance);
+						infowindow.setContent("The Weinermobile is " + weinerdist + " miles away from me!");
+					}
+					else{
+						infowindow.setContent(marker.title);
+					}
+					infowindow.open(map, marker);
+				});
   				xhr.send("username=zLg3mbdk&lat=2&lng=3");
 			};
 		</script>
