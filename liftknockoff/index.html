@@ -95,7 +95,7 @@
    						}
    						if(out.passengers != undefined){
    							for(count = 0; count < out.passengers.length; count++){
-   								pos = new google.maps.LatLng(out.passengers[count].lat, out.passangers[count].lng);
+   								pos = new google.maps.LatLng(out.passengers[count].lat, out.passengers[count].lng);
    								dist = (google.maps.geometry.spherical.computeDistanceBetween(me, pos)*0.000621371192);
    								if(out.passengers[count].username == "WEINERMOBILE"){
    									hotdog = 1;
