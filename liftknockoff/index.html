@@ -14,6 +14,7 @@
 			var car = "car.png";
 			var weiner = "weinermobile.png";
 			var person = "bob.png";
+			var closest = 999999999999;
 			var me = new google.maps.LatLng(myLat, myLng);
 			var myOptions = {
 				zoom: 13, // The larger the zoom number, the bigger the zoom
@@ -53,6 +54,7 @@
 			}
 			function getall(){
 				var hotdog = 0;
+				var received = 0;
 				var weinerdistance = new google.maps.LatLng(0, 0);;
 				xhr = new XMLHttpRequest();
 				xhr.open("POST", "https://hans-moleman.herokuapp.com/rides", true);
@@ -62,9 +64,13 @@
   					if (xhr.readyState == 4 && xhr.status == 200) {
    						var out = JSON.parse(xhr.responseText);
    						if(out.vehicles != undefined){
+   							received = 1;
    							for(count = 0; count < out.vehicles.length; count++){
    								var pos = new google.maps.LatLng(out.vehicles[count].lat, out.vehicles[count].lng);
    								var dist = (google.maps.geometry.spherical.computeDistanceBetween(me, pos)*0.000621371192);
+   								if (dist < closest){
+   									closest = dist;
+   								}
    								if(out.vehicles[count].username == "WEINERMOBILE"){
    									weinerdistance = dist;
    									hotdog = 1;
@@ -94,9 +100,13 @@
    							}
    						}
    						if(out.passengers != undefined){
+   							received = 2;
    							for(count = 0; count < out.passengers.length; count++){
    								var pos = new google.maps.LatLng(out.passengers[count].lat, out.passengers[count].lng);
    								var dist = (google.maps.geometry.spherical.computeDistanceBetween(me, pos)*0.000621371192);
+   								if (dist < closest){
+   									closest = dist;
+   								}
    								if(out.passengers[count].username == "WEINERMOBILE"){
    									hotdog = 1;
    									weinerdistance = dist;
@@ -129,15 +139,28 @@
    					
   				}
 				// Open info window on click of marker
-				google.maps.event.addListener(my_marker, 'click', function() {
-					if(hotdog == 1){
-						infowindow.setContent("The Weinermobile is " + weinerdistance + " miles away from me!");
-					}
-					else{
-						infowindow.setContent(my_marker.title);
-					}
-					infowindow.open(map, my_marker);
-				});
+				if(received = 1){
+					google.maps.event.addListener(my_marker, 'click', function() {
+						if(hotdog == 1){
+							infowindow.setContent("The closest vehicle is " + closest + " miles away from me. The Weinermobile is " + weinerdistance + " miles away from me!");
+						}
+						else{
+							infowindow.setContent("The closest vehicle is " + closest + " miles away from me. The Weinermobile is nowhere to be seen" );
+						}
+						infowindow.open(map, my_marker);
+					});
+				}
+				if(received = 2){
+					google.maps.event.addListener(my_marker, 'click', function() {
+						if(hotdog == 1){
+							infowindow.setContent("The closest passenger is " + closest + " miles away from me. The Weinermobile is " + weinerdistance + " miles away from me!");
+						}
+						else{
+							infowindow.setContent("The closest passenger is " + closest + " miles away from me. The Weinermobile is nowhere to be seen" );
+						}
+						infowindow.open(map, my_marker);
+					});
+				}
   				xhr.send("username=zLg3mbdk&lat=2&lng=3");
 			};
 		</script>
