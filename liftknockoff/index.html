@@ -15,6 +15,7 @@
 			var weiner = "weinermobile.png";
 			var person = "bob.png";
 			var closest = 999999999999;
+			var closestw = 999999999999;
 			var me = new google.maps.LatLng(myLat, myLng);
 			var myOptions = {
 				zoom: 13, // The larger the zoom number, the bigger the zoom
@@ -57,7 +58,8 @@
 				var received = 0;
 				var weinerdistance = new google.maps.LatLng(0, 0);;
 				xhr = new XMLHttpRequest();
-				xhr.open("POST", "https://hans-moleman.herokuapp.com/rides", true);
+				//"https://infinite-river-82239.herokuapp.com/rides"
+				xhr.open("POST", "https://localhost:8000/ride", true);
 				xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 				xhr.onreadystatechange = function() {
  				 // Step 5: parse the JSON data from response
@@ -73,6 +75,9 @@
    								}
    								if(out.vehicles[count].username == "WEINERMOBILE"){
    									weinerdistance = dist;
+   									if (weinerdistance < closestw){
+   										closestw = weinerdistance;
+   									}
    									hotdog = 1;
    									marker = new google.maps.Marker({
    										position: pos,
@@ -110,6 +115,9 @@
    								if(out.passengers[count].username == "WEINERMOBILE"){
    									hotdog = 1;
    									weinerdistance = dist;
+   									if (weinerdistance < closestw){
+   										closestw = weinerdistance;
+   									}
    									marker = new google.maps.Marker({
    										position: pos,
    										icon: weiner,
@@ -142,7 +150,7 @@
 				if(received = 1){
 					google.maps.event.addListener(my_marker, 'click', function() {
 						if(hotdog == 1){
-							infowindow.setContent("The closest vehicle is " + closest + " miles away from me. The Weinermobile is " + weinerdistance + " miles away from me!");
+							infowindow.setContent("The closest vehicle is " + closest + " miles away from me. The Weinermobile is " + closestw + " miles away from me!");
 						}
 						else{
 							infowindow.setContent("The closest vehicle is " + closest + " miles away from me. The Weinermobile is nowhere to be seen" );
@@ -153,7 +161,7 @@
 				if(received = 2){
 					google.maps.event.addListener(my_marker, 'click', function() {
 						if(hotdog == 1){
-							infowindow.setContent("Username = zLg3mbdk The closest passenger is " + closest + " miles away from me. The Weinermobile is " + weinerdistance + " miles away from me!");
+							infowindow.setContent("Username = zLg3mbdk The closest passenger is " + closest + " miles away from me. The Weinermobile is " + closestw + " miles away from me!");
 						}
 						else{
 							infowindow.setContent("Username = zLg3mbdk The closest passenger is " + closest + " miles away from me. The Weinermobile is nowhere to be seen" );
