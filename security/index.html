@@ -7,16 +7,63 @@
 		</head>
 		<body>
 			<h1>Introduction</h1>
+			<p>The product is a service that matches passengers to vehicles and vehicles to passengers. It takes in user input to determine whether the user is a passenger or a vehicle, stores the information in a database and returns the corresponding data. The database stores an identifier for each input as well as the location that is provided by the user. My purpose is to identify any weaknesses in the product that will leave it vulnerable to unwanted alterations by malicious users or allow users access to information that they do not have permission to access.</p>
 
 			<h1>Methodology</h1>
+			<p>In order to test the product, I first tested all the different areas that accepted user input by inserting scripts or commands. Whether it was username input or other information. Then I looked for ways to extract the source code, to see any bad coding practices that might be hidden in the code.</p>
 
 			<h1>Abstract of Findings</h1>
+			<p>The privacy and security issues found were the ability to access information of other users, ability to input incomplete information for a single user and an accessible password to the all the information. </p>
 
 			<h1>Issues Found</h1>
+			<h2> Issue 1</h2>
+			<p>
+				Issue: Injection, allowing user access to information about other passengers or drivers, user has access to information that they do not have permission to access.<br>
+				Location: Within the get /passenger.json route, inputting a username <br>
+				Severity of issue: High, this is a breach of personal privacy and information, as the stored data has a location and the time of access. <br>
+				Description of issue: The user is able to encode the username key in order to make the program return all passenger information in the database that is not under that username.<br>
+				Proof of vulnerability:<br>
+				<img src="injection_passenger.png">
+				<img src="injection_passenger2.png">
+				<br>
+				Resolution: You could include code to check the key using a key validator or you can hardcode it to remove any $ or [] symbols in the username key. *****
+			</p>
+			<h2>Issue 2</h2>
+			<p>
+				Issue: Bad programming practices <br>
+				Location: Within the code in the post /rides route, inputting latitude and longitude <br>
+				Severity of issue: Low, when an input is given, it will be changed into a number, but it is not a required part of the input. Unless longitude and latitude are strictly defined it creates a place for malicious code to enter.  
+				Description of issue: Latitude and longitude are not required to be floats and are not required to be inputted as part of the post path. This can create problems in trying to display the data on a map if there are enteries without a longitude and latitude.<br>
+				Proof of vulnerability: <br>
+				<img src="bad_coding_practice1.png">
+				<img src="bad_coding_practice2.png">
+				<img src="bad_coding_practice3.png"> <br>
+				Resolution: Add lines that checks that the inputs are not undefined: <br>
+				<pre>
+				if(la === undefined || ln === undefined){
+					response.send("error: Whoops, something is wrong with your data!");
+				}</pre>
+			<h2>Issue 3</h2>	
+			<p>
+				Issue: Bad programming practices <br>
+				Location: Hard Coded password within source code <br>
+				Severity of issue: High, with the hard password, it is possible for a user to access the database behind the service and gain access to all the information of all the users. <br>
+				Descrpition of issue: The password for the database storing the information for the service is hard coded into the source code. The password can therefore be accessed if the source code is found.<br>
+				Proof of vulnerability: <br>
+				<img src="hard_coded_password1.png">
+				<br>
+				Resolution: Remove the hardcoded portion of the mongoURI and simply have the other environments. 
+				<pre>
+					var mongoUri = process.env.MONGODB_URI || process.env.MONGOLAB_URI || process.env.MONGOHQ_URI 
+				</pre>
+			</p>
 
 			<h1>Conclusion</h1>
+			<p>
+				There are very few security problems and the ones that are included in the code are quickly and easily fixable with either a validator or with a few lines of code. While the problems are easily fixable they would be very detrimental if left unsolved and it shows how important good secure code is. 
+			</p>
 
 			<h1>References</h1>
-
+			<p>Class lecture notes, collaboration with other members of the class</p>
 		</body>
 </html>
