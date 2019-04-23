@@ -2,18 +2,39 @@
 
 <html>
 	<head>
+		<style>
+		h3{
+			font-size: 36px;
+			text-align: center;
+			text-decoration: underline;
+		}
+		p{
+			margin: 1% 5% 1% 5%;
+			font-size: 20px;
+		}
+		h1{
+			margin: 0% 5% 0% 1%;
+		}
+		h2{
+			margin: 0% 5% 0% 3%;
+		}
+		pre{
+			font-size: 15px;
+		}
+		</style>
 		<meta charset="utf-8" />
 		<title>Assignment 4: Security and Privacy Assessment of Private Car Service</title>
 		</head>
 		<body>
+			<h3>Assignment 4: Security and Privacy Assessment of Private Car Service</h3>
 			<h1>Introduction</h1>
 			<p>The product is a service that matches passengers to vehicles and vehicles to passengers. It takes in user input to determine whether the user is a passenger or a vehicle, stores the information in a database and returns the corresponding data. The database stores an identifier for each input as well as the location that is provided by the user. My purpose is to identify any weaknesses in the product that will leave it vulnerable to unwanted alterations by malicious users or allow users access to information that they do not have permission to access.</p>
 
 			<h1>Methodology</h1>
-			<p>In order to test the product, I first tested all the different areas that accepted user input by inserting scripts or commands. Whether it was username input or other information. Then I looked for ways to extract the source code, to see any bad coding practices that might be hidden in the code.</p>
+			<p>In order to test the product, I first tested all the different areas that accepted user input by inserting scripts or commands. Whether it was username input or other information. Then I looked for ways to extract the source code, to see any bad coding practices that might be hidden in the code. I specifically looked for different ways that users could access unauthorized data and get the location of other users.</p>
 
 			<h1>Abstract of Findings</h1>
-			<p>The privacy and security issues found were the ability to access information of other users, ability to input incomplete information for a single user and an accessible password to the all the information. </p>
+			<p>The privacy and security issues found were the ability to access information of other users, ability to input incomplete information for a single user, an accessible password to the all the information and a way for users to access information about other users without any passwords or other verification processes. </p>
 
 			<h1>Issues Found</h1>
 			<h2> Issue 1</h2>
@@ -23,8 +44,8 @@
 				Severity of issue: High, this is a breach of personal privacy and information, as the stored data has a location and the time of access. <br>
 				Description of issue: The user is able to encode the username key in order to make the program return all passenger information in the database that is not under that username.<br>
 				Proof of vulnerability:<br>
-				<img src="injection_passenger.png">
-				<img src="injection_passenger2.png">
+				<img src="injection_passenger.png" alt="Input into searchbar that alters the username key to return all usernames that are not 'alexander'.">
+				<img src="injection_passenger2.png" alt="The results of asking for the information of all the passengers that do not have the username 'alexander', which is all the passenger information.">
 				<br>
 				Resolution: You could include code to check the key using a key validator or you can hardcode it to remove any $ or [] symbols in the username key. *****
 			</p>
@@ -32,12 +53,12 @@
 			<p>
 				Issue: Bad programming practices <br>
 				Location: Within the code in the post /rides route, inputting latitude and longitude <br>
-				Severity of issue: Low, when an input is given, it will be changed into a number, but it is not a required part of the input. Unless longitude and latitude are strictly defined it creates a place for malicious code to enter.  
+				Severity of issue: Low, when an input is given, it will be changed into a number, but it is not a required part of the input. Unless longitude and latitude are strictly defined it creates a place for malicious code to enter.  <br>
 				Description of issue: Latitude and longitude are not required to be floats and are not required to be inputted as part of the post path. This can create problems in trying to display the data on a map if there are enteries without a longitude and latitude.<br>
 				Proof of vulnerability: <br>
-				<img src="bad_coding_practice1.png">
-				<img src="bad_coding_practice2.png">
-				<img src="bad_coding_practice3.png"> <br>
+				<img src="bad_coding_practice1.png" alt="Inputting only the username JANET and not inputting the latitude or the longitude through the POST route.">
+				<img src="bad_coding_practice2.png" alt="Inputting only the username JANET without additional information goes through without any errors.">
+				<img src="bad_coding_practice3.png"alt="Inputting strings into the latitide or longitude are not treated as an error."> <br>
 				Resolution: Add lines that checks that the inputs are not undefined: <br>
 				<pre>
 				if(la === undefined || ln === undefined){
@@ -48,9 +69,9 @@
 				Issue: Bad programming practices <br>
 				Location: Hard Coded password within source code <br>
 				Severity of issue: High, with the hard password, it is possible for a user to access the database behind the service and gain access to all the information of all the users. <br>
-				Descrpition of issue: The password for the database storing the information for the service is hard coded into the source code. The password can therefore be accessed if the source code is found.<br>
+				Description of issue: The password for the database storing the information for the service is hard coded into the source code. The password can therefore be accessed if the source code is found.<br>
 				Proof of vulnerability: <br>
-				<img src="hard_coded_password1.png">
+				<img src="hard_coded_password1.png" alt="password of mlab database is hard-coded into the source code.">
 				<br>
 				Resolution: Remove the hardcoded portion of the mongoURI and simply have the other environments. 
 				<pre>
@@ -58,12 +79,29 @@
 				</pre>
 			</p>
 
+			<h2>Issue 4</h2>
+			<p>
+				Issue: Bad programming practices <br>
+				Location: The returning of all the information of any given passenger when you input their username in the passenger.json GET path<br>
+				Severity of issue: High, this allows users to access information of any other passenger as long as they know their username. Information that can be easily accessed include sensitive information such as location and the time at which the user was at that location.<br>
+				Description of issue: The service is designed to easily return all of the information of a passenger if you input the username into the passenger.json pathway. All information under that username is returned with no other verification required. <br>
+				Proof of vulnerability: <br>
+				<img src="bad_coding_practice4.png" alt="Inputting the username hello into the passenger.json pathway without any further verification."><br>
+				<img src="bad_coding_practice5.png" alt="The webpage returns all information about the passenger with the username hello without further verification required."><br>
+				Resolution: Require a password or some sort of identification in order to verify that the user has permission to access this information, such as checking the cookies of a user.  
+			</p>
+
 			<h1>Conclusion</h1>
 			<p>
-				There are very few security problems and the ones that are included in the code are quickly and easily fixable with either a validator or with a few lines of code. While the problems are easily fixable they would be very detrimental if left unsolved and it shows how important good secure code is. 
+				There are very few security problems and the ones that are included in the code are quickly and easily fixable with either a validator or with a few lines of code. Since the service is working with private information, that if mishandled would cause a lot of problems with users. While the problems are easily fixable they would be very detrimental if left unsolved and it shows how important good secure code is. 
 			</p>
 
 			<h1>References</h1>
-			<p>Class lecture notes, collaboration with other members of the class</p>
+			<p>Class lecture notes<br>
+			For page margins: https://www.w3schools.com/cssref/pr_margin.asp<br>
+			For font size: https://kyleschaeffer.com/css-font-size-em-vs-px-vs-pt-vs-percent <br>
+			Center aligning text: https://www.w3schools.com/css/css_align.asp<br>
+			Text style: https://www.w3schools.com/css/css_text.asp<br>
+			</p>
 		</body>
 </html>
