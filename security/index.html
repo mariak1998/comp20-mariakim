@@ -28,7 +28,27 @@
 				<img src="injection_passenger.png" alt="Input into searchbar that alters the username key to return all usernames that are not 'alexander'.">
 				<img src="injection_passenger2.png" alt="The results of asking for the information of all the passengers that do not have the username 'alexander', which is all the passenger information.">
 				<br>
-				Resolution: You could include code to check the key using a key validator or you can hardcode it to remove any $ or [] symbols in the username key. *****
+				Resolution: You could take the username and manually check it against all the usernames within the passenger collection. 
+				<pre>
+					var username = request.query.username;
+					db.collection('passengers', function(error,collection){
+						if(error){
+							response.send(500);
+						}
+						if(!error){
+							collection.find().toArray(function(error,results){
+								if(!error){
+									var output;
+									for(var count = 0; 0 < results.length; count++){
+										if(username == results[count].username){
+											output += JSON.stringify(results[count]);
+										}
+									}
+								}
+							});
+						}
+					}
+				</pre>
 			</p>
 			<h2>Issue 2</h2>
 			<p>
