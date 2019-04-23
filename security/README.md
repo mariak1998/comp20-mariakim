@@ -3,6 +3,6 @@ Created a html documetn that overviews the security issues found in my partner's
 visuals of the security problems as well as a short suggestion for fixes for each. 
 
 Identify anyone with whom you have collaborated or discussed the assignment:
-Discussed with Julie Yeung 
+Discussed with Julie Yeung and got help from Manish. 
 
 Say approximately how many hours you have spent completing the assignment: 4
